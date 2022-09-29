@@ -65,7 +65,11 @@ app.get('/api/shorturl/:url', (req, res) => {
 })
 
 const urlReformat = (url) => {
-  const urlSplit = url.split("https://")
+  url = url.toLowerCase()
+  let urlSplit
+  if (url.includes('https://')) urlSplit = url.split('https://')
+  else if (url.includes('http://')) urlSplit = url.split('http://')
+
   if (urlSplit[1] == undefined) return urlSplit[0].split("/")[0]
   else return urlSplit[1].split("/")[0]
 }
