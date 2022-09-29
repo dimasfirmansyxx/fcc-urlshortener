@@ -33,7 +33,7 @@ app.get('/api/hello', (req, res) => {
 
 app.post('/api/shorturl', (req, res) => {
   const url = urlReformat(req.body.url)
-
+  
   dns.resolveAny(url, (err) => {
     if (err) res.json({error: 'Invalid URL'})
     else {
@@ -64,14 +64,12 @@ app.get('/api/shorturl/:url', (req, res) => {
   })
 })
 
-const urlReformat = (url) => {
-  url = url.toLowerCase()
-  let urlSplit
-  if (url.includes('https://')) urlSplit = url.split('https://')
-  else if (url.includes('http://')) urlSplit = url.split('http://')
-
-  if (urlSplit[1] == undefined) return urlSplit[0].split("/")[0]
-  else return urlSplit[1].split("/")[0]
+const urlReformat = (givenUrl) => {
+  let url = givenUrl.toLowerCase()
+  url = url.replace('http://','')
+  url = url.replace('https://','')
+  url = url.split('/')
+  return url[0]
 }
 
 app.listen(port, () => {
